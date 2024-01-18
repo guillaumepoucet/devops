@@ -1,45 +1,70 @@
-"use client"
+"use client";
+
+import { useEffect, useState } from "react";
+
 
 function NewGameForm() {
- 
-  const onSubmit = (event) => {
+
+  const [players, setPlayers] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const players = [];
+    //   // Exemple de récupération des données du formulaire
+    //   const formData = new FormData(event.target);
 
-    for (let i = 1; i <= 4; i++) {
-      const player = formData.get(`player${i}`);
+    event.target.querySelectorAll("input").forEach((input, index) => {
+      const pseudo = input.value;
 
-      if (player) {
-        players.push(player);
+      if (!pseudo) {
+        const error = { [input.name]: { message: "Le champ est vide" } }
+        setErrors({ ...errors, ...error })
       }
-    }
+      if (pseudo) {
+        setErrors({ ...errors, [input.name]: null })
+        const player = players[index];
+
+        player.pseudo = pseudo;
+        setPlayers([...players.filter(p => player !== p), player])
+
+      }
+    })
+  }
+
+  const addPlayer = () => {
+    const lastAddedPlayer = players[players.length - 1];
+    const player = { id: (lastAddedPlayer?.id ?? 0) + 1, pseudo: "" };
+    setPlayers([...players, player])
+  }
+
+  console.log(players);
+
+  const deletePlayer = (index) => {
+    const playerToDelete = players[index];
+    const newPlayers = players.filter((player) => player.id !== playerToDelete.id);
+    setPlayers(newPlayers);
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <label htmlFor="player1">
-        <span>Player 1</span>
-        <input type="text" className="border border-gray-400" name="player1" id="player1" />
-      </label>
+    <form onSubmit={handleSubmit} className="grid space-y-2">
+      {players.map((player, index) => {
+        return (
+          <label key={index} htmlFor={`player${index + 1}`} className="grid">
+            <span>Player {index + 1}</span>
+            <input defaultValue={player.pseudo} type="text" name={`player${index + 1}`} id={`player${index + 1}`} className="px-3 py-2 border border-gray-400" />
 
-      <label htmlFor="player2">
-        <span>Player 2</span>
-        <input type="text" name="player2" id="player2" />
-      </label>
+            {errors[`player${index + 1}`] && <p>{errors[`player${index + 1}`].message}</p>}
 
-      <label htmlFor="player3">
-        <span>Player 3</span>
-        <input type="text" name="player3" id="player3" />
-      </label>
+            <button type="button" className="text-red-500" onClick={() => deletePlayer(index)}>Supprimer</button>
+          </label>
+        )
+      }
+      )}
 
-      <label htmlFor="player4">
-        <span>Player 4</span>
-        <input type="text" name="player4" id="player4" />
-      </label>
-
-      <button type="submit">Start game</button>
+      <button type="button" onClick={addPlayer} className="px-4 py-2 text-white bg-indigo-600">New player</button>
+      <p>{players.length}</p>
+      <button className="px-4 py-2 text-black bg-orange-500" type="submit">Start game</button>
     </form>
   )
 }
