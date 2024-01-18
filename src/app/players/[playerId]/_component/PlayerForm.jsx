@@ -1,13 +1,9 @@
 "use client";
 
-const Input = ({ type, label, name, id, defaultValue }) => {
-  return (
-    <div className="grid gap-2">
-      <label htmlFor={id}>{label}</label>
-      <input defaultValue={defaultValue} type={type} name={name} id={id} className="px-3 py-2 border border-gray-400" />
-    </div>
-  )
-}
+import { Input } from "@component/components/input/Input";
+import { UserContext } from "@component/context/UserContext";
+import { useContext } from "react";
+import { useParams } from "next/navigation";
 
 const schema = [
   {
@@ -37,7 +33,13 @@ const schema = [
 ]
 
 function PlayerForm({ player }) {
-  
+  const user = useContext(UserContext);
+  const { playerId } = useParams();
+
+  if (user.id !== playerId) {
+    return null;
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
