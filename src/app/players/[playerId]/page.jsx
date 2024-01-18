@@ -1,4 +1,5 @@
 import { players } from "@component/lib/players";
+import PlayerForm from "./_component/PlayerForm";
 
 function Page({ params }) {
   const { playerId } = params;
@@ -13,8 +14,10 @@ function Page({ params }) {
       <p>Wins: {player.wins}</p>
       <p>Total games played: {player.totalGames}</p>
 
-      {/* TODO formulaire  pré-rempli avec informations du joueurs */}
-      {/* TODO gérer la soumission en console.log les infos du form */}
+
+      <PlayerForm player={player} />
+      
+
     </div>
   )
 }
