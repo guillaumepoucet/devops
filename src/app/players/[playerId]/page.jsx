@@ -12,6 +12,9 @@ function Page({ params }) {
       <p>Score: {player.score}</p>
       <p>Wins: {player.wins}</p>
       <p>Total games played: {player.totalGames}</p>
+
+      {/* TODO formulaire  pré-rempli avec informations du joueurs */}
+      {/* TODO gérer la soumission en console.log les infos du form */}
     </div>
   )
 }
