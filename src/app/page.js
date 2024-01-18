@@ -14,7 +14,7 @@ export default function Home() {
   })[0];
 
   return (
-    <main className="flex min-h-screen flex-col p-4">
+    <main className="flex flex-col min-h-screen">
 
       <h1>UNO</h1>
 
@@ -27,17 +27,21 @@ export default function Home() {
         </div>
       ))}
 
+      <h2>Last game:</h2>
+      
       {lastPlayedGame ? (
         <div>
-          {formatDate("oigjregi")}
+          {formatDate(new Date("irjgoirjg"))}
           <p>
-            Winner:
+            Winner:&nbsp;
             <Link href={`/players/${lastPlayedGame.winner.id}`}>{lastPlayedGame.winner.pseudo}</Link>
           </p>
         </div>
       ) : (
         "Pas de jeu récent."
       )}
+
+      <Link href={"/games/new"}>New game</Link>
 
     </main>
   )
